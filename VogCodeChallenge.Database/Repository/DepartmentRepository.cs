@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VogCodeChallenge.Database.Entities;
 
@@ -28,8 +29,8 @@ namespace VogCodeChallenge.Database.Repository
         /// </summary>
         /// <returns>List of Depatments</returns>
         public IList<DepartmentEntity> GetAllDepartments()
-        {
-            return CreateDepartmentMockData();
+        {            
+            return HelperMock.CreateDepartmentMockData();
         }
 
         /// <summary>
@@ -39,43 +40,24 @@ namespace VogCodeChallenge.Database.Repository
         /// <returns>List of Employees</returns>
         public IList<EmployeeEntity> GetAllEmployeeDetails(string departmentAddress)
         {
-            return CreateEmployeeMockData(departmentAddress);            
+            return HelperMock.CreateEmployeeMockData(departmentAddress);            
         }
-
-        /// <summary>
-        /// Method to create mock data for departments
-        /// </summary>
-        /// <returns>list of department entity</returns>
-        private IList<DepartmentEntity> CreateDepartmentMockData()
+                
+        public IEnumerable<EmployeeEntity> GetAll()
         {
-            var department = new List<DepartmentEntity>
-            {
-                new DepartmentEntity { DepartmentAddress = "Dep1", DepartmentName = "Agriculture"},
-                new DepartmentEntity { DepartmentAddress = "Dep2", DepartmentName = "Mortgage"},
-                new DepartmentEntity { DepartmentAddress = "Dep3", DepartmentName = "Sales"}
-            };
+            return HelperMock.EmployeeMockData();
+        }   
 
-            return department;
-        }
-
-        /// <summary>
-        /// Method to create mock data for employees
-        /// </summary>
-        /// <returns>list of employee entity</returns>
-        private IList<EmployeeEntity> CreateEmployeeMockData(string departmentAddress)
+        public DepartmentEntity GetDepartment(string departmentId)
         {
-            var employee = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { EmployeeId = 1, FirstName = "Stephen", LastName = "Cornor", JobTitle="Technical Lead", Address="Road Number 1", DepartmentAddress = "Dep1" },
-                new EmployeeEntity { EmployeeId = 2, FirstName = "Mark", LastName = "Mallabar", JobTitle="Senior Developer", Address="Road Number 2", DepartmentAddress = "Dep1" },
-                new EmployeeEntity { EmployeeId = 3, FirstName = "Felix", LastName = "Smith", JobTitle="Senior Tester", Address="Road Number 3", DepartmentAddress = "Dep1" },
-                new EmployeeEntity { EmployeeId = 4, FirstName = "Emma", LastName = "Miller", JobTitle="Technical Lead", Address="Road Number 4", DepartmentAddress = "Dep2" },
-                new EmployeeEntity { EmployeeId = 5, FirstName = "Ava", LastName = "Jones", JobTitle="Senior Developer", Address="Road Number 5", DepartmentAddress = "Dep2" },
-                new EmployeeEntity { EmployeeId = 6, FirstName = "Charlotte", LastName = "Anderson", JobTitle="Senior Tester", Address="Road Number 6", DepartmentAddress = "Dep3" },
-                new EmployeeEntity { EmployeeId = 6, FirstName = "Andrew", LastName = "Anderson", JobTitle="Junior Tester", Address="Road Number 7", DepartmentAddress = "Dep3" }
-            };
+            DepartmentEntity departmentDetail = new DepartmentEntity();
 
-            return employee.Where(x => x.DepartmentAddress == departmentAddress).ToList();
+            if(!String.IsNullOrEmpty(departmentId))
+            {
+                departmentDetail = HelperMock.CreateDepartmentDataForGivenId(departmentId);
+            }
+
+            return departmentDetail;
         }
     }
 }

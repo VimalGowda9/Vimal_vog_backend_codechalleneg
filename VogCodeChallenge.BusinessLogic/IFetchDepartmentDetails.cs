@@ -13,5 +13,6 @@ namespace VogCodeChallenge.BusinessLogic
         /// </summary>
         /// <returns>List of Department model</returns>
         IList<DepartmentModel> GetAllDepartments();
+
     }
 }

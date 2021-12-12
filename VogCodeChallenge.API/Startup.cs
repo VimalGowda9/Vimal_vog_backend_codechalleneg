@@ -32,6 +32,7 @@ namespace VogCodeChallenge.API
             services.AddDbContext<VogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("VogDB")));
             services.AddControllers();
             services.AddTransient<IFetchDepartmentDetails, FetchDepartmentDetails>();
+            services.AddTransient<IFetchEmployeeDetails, FetchEmployeeDetails>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddAutoMapper(typeof(Startup));
         }

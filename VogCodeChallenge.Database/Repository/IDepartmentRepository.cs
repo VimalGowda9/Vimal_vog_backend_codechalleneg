@@ -20,5 +20,10 @@ namespace VogCodeChallenge.Database.Repository
         /// <param name="departmentAddress"></param>
         /// <returns>List of Employees</returns>
         IList<EmployeeEntity> GetAllEmployeeDetails(string departmentAddress);
+
+        IEnumerable<EmployeeEntity> GetAll();
+
+        DepartmentEntity GetDepartment(string departmentId);
+
     }
 }
