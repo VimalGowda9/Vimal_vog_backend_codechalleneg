@@ -35,6 +35,7 @@ namespace VogCodeChallenge.API.Controllers
         /// Action method to fetch list of Departments an its employee details
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public IActionResult DepartmentDetails()
         {
             var departmentDetails = _departmentDetails.GetAllDepartments();
