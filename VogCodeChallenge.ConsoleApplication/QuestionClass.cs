@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace VogCodeChallenge.ConsoleApplication
@@ -31,6 +32,47 @@ namespace VogCodeChallenge.ConsoleApplication
             }
             
             return names;
+        }
+
+        /// <summary>
+        /// TestModule to return result as per the input value
+        /// </summary>
+        /// <param name="inputValueType">input value type</param>
+        /// <param name="value">input value</param>
+        /// <returns></returns>
+        public static string TestModule(string inputValueType, string value)
+        {
+            string result;
+
+            try
+            {
+                switch (inputValueType)
+                {
+                    case HelperConstants.oneToFour:
+                        result = (int.Parse(value) * 2).ToString();
+                        break;
+                    case HelperConstants.greaterThanFour:
+                        result = (int.Parse(value) * 3).ToString();
+                        break;
+                    case HelperConstants.lessThanOne:
+                        throw new System.Exception();                        
+                    case HelperConstants.floatValue:
+                        result = "3.0";
+                        break;
+                    case HelperConstants.stringValue:
+                        result = value.ToUpper();
+                        break;
+                    default:
+                        result = value;
+                        break;
+                }
+            }
+            catch(Exception)
+            {
+                result = "Input Value can not be less than One";
+            }           
+
+            return result;
         }
     }
 }
