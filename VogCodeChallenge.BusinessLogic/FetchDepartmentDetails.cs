@@ -13,7 +13,7 @@ namespace VogCodeChallenge.BusinessLogic
         /// <summary>
         /// Private field for department repository
         /// </summary>
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepEmpRepository _departmentRepository;
         
         /// <summary>
         /// Private field for Mapper
@@ -25,7 +25,7 @@ namespace VogCodeChallenge.BusinessLogic
         /// </summary>
         /// <param name="departmentRepository"></param>
         /// <param name="mapper"></param>
-        public FetchDepartmentDetails(IDepartmentRepository departmentRepository, IMapper mapper)
+        public FetchDepartmentDetails(IDepEmpRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
             _mapper = mapper;
@@ -45,7 +45,7 @@ namespace VogCodeChallenge.BusinessLogic
             //For each Department fetch its Employee details
             foreach (DepartmentModel dep in departmentDetails)
             {
-                var employeeDetails = _departmentRepository.GetAllEmployeeDetails(dep.DepartmentAddress);
+                var employeeDetails = _departmentRepository.GetAllEmployeeDetailsByDepAddress(dep.DepartmentAddress);
                 var result = _mapper.Map<List<EmployeeModel>>(employeeDetails);
                 dep.Employees = result;
             }

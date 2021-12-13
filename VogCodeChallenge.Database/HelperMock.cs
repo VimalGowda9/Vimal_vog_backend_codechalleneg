@@ -55,6 +55,11 @@ namespace VogCodeChallenge.Database
             };
         }
 
+        /// <summary>
+        /// Method to fetch Department detail for the supplied department ID
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns>Department details</returns>
         public static DepartmentEntity CreateDepartmentDataForGivenId(string departmentId)
         {
             var department = CreateDepartmentMockData();

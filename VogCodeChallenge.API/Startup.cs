@@ -33,7 +33,7 @@ namespace VogCodeChallenge.API
             services.AddControllers();
             services.AddTransient<IFetchDepartmentDetails, FetchDepartmentDetails>();
             services.AddTransient<IFetchEmployeeDetails, FetchEmployeeDetails>();
-            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<IDepEmpRepository, DepEmpRepository>();
             services.AddAutoMapper(typeof(Startup));
         }
 

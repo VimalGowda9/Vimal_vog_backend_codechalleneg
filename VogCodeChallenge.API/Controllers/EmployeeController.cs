@@ -13,16 +13,32 @@ namespace VogCodeChallenge.API.Controllers
     [Route("[controller]")]
     public class EmployeeController : Controller
     {
+        /// <summary>
+        /// Private field for FetchEmployeeDetails class
+        /// </summary>
         private readonly IFetchEmployeeDetails _employeeDetails;
+
+        /// <summary>
+        /// Private field for Mapper
+        /// </summary>
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Parameter Constructor
+        /// </summary>
+        /// <param name="fetchEmployeeDetails"></param>
+        /// <param name="mapper"></param>
         public EmployeeController(IFetchEmployeeDetails fetchEmployeeDetails, IMapper mapper)
         {
             _employeeDetails = fetchEmployeeDetails;
             _mapper = mapper;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Method to fetch list of all Employee details
+        /// </summary>
+        /// <returns>list of Employee</returns>
+        [HttpGet("")]
         public IActionResult GetAll()
         {
             var employeeDetails = _employeeDetails.GetAll();
@@ -30,12 +46,29 @@ namespace VogCodeChallenge.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public IActionResult Department(string departmentId)
+        /// <summary>
+        /// Method to fetch department detail for the provided department Id/Address
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns>Department Detail</returns>
+        [HttpGet("department/{departmentId}")]
+        public IActionResult GetDepartmentById([FromRoute]string departmentId)
         {
-            var department = _employeeDetails.GetDepartment(departmentId);
-            var result = _mapper.Map<Department>(department);
-            return Ok(result);
+            if (String.IsNullOrEmpty(departmentId))
+            {
+                return NoContent();
+            }
+            else
+            {
+                var department = _employeeDetails.GetDepartmentByDepId(departmentId);
+                var result = _mapper.Map<Department>(department);
+                if(String.IsNullOrEmpty(result.DepartmentAddress))
+                {
+                    return NotFound();
+                }
+                
+                return Ok(result);
+            }                
         }
     }
 }

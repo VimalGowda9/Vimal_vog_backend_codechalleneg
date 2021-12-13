@@ -9,45 +9,79 @@ using VogCodeChallenge.Database.Repository;
 
 namespace VogCodeChallenge.BusinessLogic
 {
+    /// <summary>
+    /// FetchEmployeeDetails Class
+    /// </summary>
     public class FetchEmployeeDetails : IFetchEmployeeDetails
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        /// <summary>
+        /// Private field for Repository
+        /// </summary>
+        private readonly IDepEmpRepository _depEmpRepository;
+
+        /// <summary>
+        /// Private field for Mapper
+        /// </summary>
         private readonly IMapper _mapper;
 
-        public FetchEmployeeDetails(IDepartmentRepository departmentRepository, IMapper mapper)
+        /// <summary>
+        /// Parameter Constructor
+        /// </summary>
+        /// <param name="departmentRepository"></param>
+        /// <param name="mapper"></param>
+        public FetchEmployeeDetails(IDepEmpRepository departmentRepository, IMapper mapper)
         {
-            _departmentRepository = departmentRepository;
+            _depEmpRepository = departmentRepository;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Method to fetch all Employee Details
+        /// </summary>
+        /// <returns>Employee details</returns>
         public IEnumerable<EmployeeModel> GetAll()
         {
             return GetEmployeeDetails();
         }
 
+        /// <summary>
+        /// Method to Fetch list of all Employee details
+        /// </summary>
+        /// <returns>List of Employee details</returns>
         public IList<EmployeeModel> ListAll()
         {
             return GetEmployeeDetails().ToList();
         }
 
-        public DepartmentModel GetDepartment(string departmentId)
+        /// <summary>
+        /// Method to get Department details for the supplied Department Is/Address
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns>Department Details</returns>
+        public DepartmentModel GetDepartmentByDepId(string departmentId)
         {
-            DepartmentModel departmentDetail = new DepartmentModel();
+            //Get the Department detail
+            var department = _depEmpRepository.GetDepartmentByDepId(departmentId);
 
-            if (!String.IsNullOrEmpty(departmentId))
-            {
-                var department = _departmentRepository.GetDepartment(departmentId);
-                departmentDetail = _mapper.Map<DepartmentModel>(department);
-            }
-                
-            return departmentDetail;
+            //Get Employee detail for the relevant department
+            var employeeDetails = _depEmpRepository.GetAllEmployeeDetailsByDepAddress(department.DepartmentAddress);
+            var empMapping = _mapper.Map<List<EmployeeModel>>(employeeDetails);
+
+            var depMapping = _mapper.Map<DepartmentModel>(department);
+            depMapping.Employees = empMapping;
+
+            return depMapping;                        
         }
 
+        /// <summary>
+        /// Private method to get list of all Employee details from Database.
+        /// </summary>
+        /// <returns>list of Employee details</returns>
         private IEnumerable<EmployeeModel> GetEmployeeDetails()
         {
-            var employee = _departmentRepository.GetAll();
-            var mapping = _mapper.Map<IEnumerable<EmployeeModel>>(employee);
-            return mapping;
+            var employee = _depEmpRepository.GetAllEmployees();
+            var empMapping = _mapper.Map<IEnumerable<EmployeeModel>>(employee);
+            return empMapping;
         }
 
         
