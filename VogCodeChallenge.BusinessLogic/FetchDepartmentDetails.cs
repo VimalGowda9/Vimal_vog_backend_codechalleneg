@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using VogCodeChallenge.BusinessLogic.Models;
 using VogCodeChallenge.Database.Repository;
 
@@ -37,18 +38,23 @@ namespace VogCodeChallenge.BusinessLogic
         /// <returns>List of Department model</returns>
         public IList<DepartmentModel> GetAllDepartments()
         {
+            var departmentDetails = new List<DepartmentModel>();
+            
             //Get List of all the Departments
             var department = _departmentRepository.GetAllDepartments();
-                                         
-            var departmentDetails = _mapper.Map<List<DepartmentModel>>(department);
-
-            //For each Department fetch its Employee details
-            foreach (DepartmentModel dep in departmentDetails)
+            
+            if(department != null)
             {
-                var employeeDetails = _departmentRepository.GetAllEmployeeDetailsByDepAddress(dep.DepartmentAddress);
-                var result = _mapper.Map<List<EmployeeModel>>(employeeDetails);
-                dep.Employees = result;
-            }
+                departmentDetails = _mapper.Map<List<DepartmentModel>>(department);
+
+                //For each Department fetch its Employee details
+                foreach (DepartmentModel dep in departmentDetails)
+                {
+                    var employeeDetails = _departmentRepository.GetAllEmployeeDetailsByDepAddress(dep.DepartmentAddress);
+                    var result = employeeDetails != null ? _mapper.Map<List<EmployeeModel>>(employeeDetails) : null;
+                    dep.Employees = result;
+                }
+            }           
 
             return departmentDetails;
         }

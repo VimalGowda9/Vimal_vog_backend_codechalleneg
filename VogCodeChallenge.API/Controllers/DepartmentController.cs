@@ -39,8 +39,15 @@ namespace VogCodeChallenge.API.Controllers
         public IActionResult DepartmentDetails()
         {
             var departmentDetails = _departmentDetails.GetAllDepartments();
-            var result = _mapper.Map<List<Department>>(departmentDetails);
-            return Ok(result);
+            if(departmentDetails != null && departmentDetails.Count > 0)
+            {
+                var result = _mapper.Map<List<Department>>(departmentDetails);
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }            
         }
     }
 }

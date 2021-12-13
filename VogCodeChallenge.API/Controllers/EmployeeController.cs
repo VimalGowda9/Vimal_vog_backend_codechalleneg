@@ -42,8 +42,16 @@ namespace VogCodeChallenge.API.Controllers
         public IActionResult GetAll()
         {
             var employeeDetails = _employeeDetails.GetAll();
-            var result = _mapper.Map<List<Employee>>(employeeDetails);
-            return Ok(result);
+
+            if(employeeDetails != null && employeeDetails.Count() > 0)
+            {
+                var result = _mapper.Map<List<Employee>>(employeeDetails);
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }            
         }
 
         /// <summary>
@@ -61,8 +69,8 @@ namespace VogCodeChallenge.API.Controllers
             else
             {
                 var department = _employeeDetails.GetDepartmentByDepId(departmentId);
-                var result = _mapper.Map<Department>(department);
-                if(String.IsNullOrEmpty(result.DepartmentAddress))
+                var result = department != null ? _mapper.Map<Department>(department) : null;
+                if(result == null || String.IsNullOrEmpty(result.DepartmentAddress))
                 {
                     return NotFound();
                 }

@@ -62,14 +62,18 @@ namespace VogCodeChallenge.BusinessLogic
         {
             //Get the Department detail
             var department = _depEmpRepository.GetDepartmentByDepId(departmentId);
+            var depMapping = new DepartmentModel();
 
-            //Get Employee detail for the relevant department
-            var employeeDetails = _depEmpRepository.GetAllEmployeeDetailsByDepAddress(department.DepartmentAddress);
-            var empMapping = _mapper.Map<List<EmployeeModel>>(employeeDetails);
+            if (department != null)
+            {
+                //Get Employee detail for the relevant department
+                var employeeDetails = _depEmpRepository.GetAllEmployeeDetailsByDepAddress(department.DepartmentAddress);
+                var empMapping = employeeDetails != null ? _mapper.Map<List<EmployeeModel>>(employeeDetails) : null;
 
-            var depMapping = _mapper.Map<DepartmentModel>(department);
-            depMapping.Employees = empMapping;
-
+                depMapping = _mapper.Map<DepartmentModel>(department);
+                depMapping.Employees = empMapping;
+            }
+            
             return depMapping;                        
         }
 
@@ -80,10 +84,9 @@ namespace VogCodeChallenge.BusinessLogic
         private IEnumerable<EmployeeModel> GetEmployeeDetails()
         {
             var employee = _depEmpRepository.GetAllEmployees();
-            var empMapping = _mapper.Map<IEnumerable<EmployeeModel>>(employee);
+            var empMapping = employee != null ? _mapper.Map<IEnumerable<EmployeeModel>>(employee) : null;
             return empMapping;
         }
-
         
     }
 }

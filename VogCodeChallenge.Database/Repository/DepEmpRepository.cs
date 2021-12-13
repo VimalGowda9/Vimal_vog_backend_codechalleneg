@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using VogCodeChallenge.Database.Entities;
 
 namespace VogCodeChallenge.Database.Repository
@@ -29,6 +30,7 @@ namespace VogCodeChallenge.Database.Repository
         public IList<DepartmentEntity> GetAllDepartments()
         {            
             return HelperMock.CreateDepartmentMockData();
+            //_vogContext.Department.ToList();
         }
 
         /// <summary>
@@ -38,7 +40,8 @@ namespace VogCodeChallenge.Database.Repository
         /// <returns>List of Employees</returns>
         public IList<EmployeeEntity> GetAllEmployeeDetailsByDepAddress(string departmentAddress)
         {
-            return HelperMock.CreateEmployeeMockData(departmentAddress);            
+            return HelperMock.CreateEmployeeMockData(departmentAddress);
+            //_vogContext.Employee.Find(departmentAddress);
         }
           
         /// <summary>
@@ -48,6 +51,7 @@ namespace VogCodeChallenge.Database.Repository
         public IEnumerable<EmployeeEntity> GetAllEmployees()
         {
             return HelperMock.EmployeeMockData();
+            //_vogContext.Employee.ToList();
         }   
 
         /// <summary>
@@ -57,7 +61,8 @@ namespace VogCodeChallenge.Database.Repository
         /// <returns>Department details</returns>
         public DepartmentEntity GetDepartmentByDepId(string departmentId)
         {
-            return HelperMock.CreateDepartmentDataForGivenId(departmentId);            
+            return HelperMock.CreateDepartmentDataForGivenId(departmentId);
+            //_vogContext.Department.Find(departmentId);
         }
     }
 }
